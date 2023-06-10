@@ -263,12 +263,40 @@
     </property>
    </widget>
   </widget>
+  <widget class="QGroupBox" name="five">
+   <property name="geometry">
+    <rect>
+     <x>500</x>
+     <y>20</y>
+     <width>241</width>
+     <height>171</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_crs">
+   <property name="geometry">
+    <rect>
+     <x>500</x>
+     <y>200</y>
+     <width>131</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <zorder>five</zorder>
   <zorder>fore</zorder>
   <zorder>tr</zorder>
   <zorder>button_box</zorder>
   <zorder>pushbutton_calculate</zorder>
   <zorder>one</zorder>
   <zorder>two</zorder>
+  <zorder>label_crs</zorder>
  </widget>
  <customwidgets>
   <customwidget>

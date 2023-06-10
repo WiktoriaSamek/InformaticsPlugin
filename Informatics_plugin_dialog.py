@@ -29,6 +29,13 @@ from qgis.PyQt import QtWidgets
 from qgis.utils import iface
 from qgis.core import QgsWkbTypes
 
+from qgis.core import (
+    QgsCoordinateReferenceSystem,
+    QgsGeometry,
+    QgsFeature,
+    QgsVectorLayer,
+    QgsProject,)
+
 # This loads your .ui file so that PyQt can populate your plugin with the elements from Qt Designer
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'Informatics_plugin_dialog_base.ui'))
@@ -114,20 +121,38 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
             
     def area(self):
         selected_layer = self.mMapLayerComboBox.currentLayer()
-        number_elements = len(selected_layer.selectedFeatures())
+        crs = selected_layer.crs()
 
-        if number_elements >= 3:
-            features = selected_layer.selectedFeatures()
-            geom_type = features[0].geometry().type()
-            if geom_type == QgsWkbTypes.PolygonGeometry:
-                total_area = 0.0
-                for feature in features:
-                    geom = feature.geometry()
-                    if geom.type() == QgsWkbTypes.PolygonGeometry:
-                        total_area += geom.area()
-                self.label_area.setText(f'Total area: {total_area:.3f} square units')
-            else:
-                self.label_area.setText("Selected features are not polygons")
+        if crs.authid() == 'EPSG:2178':
+            crs_info = "PL-2000 + Zone " + crs.description()
+        elif crs.authid() == 'EPSG:2180':
+            crs_info = "PL-1992"
         else:
-            self.label_area.setText("Not enough polygons selected")
-    
+            crs_info = "Unknown CRS"
+
+        self.label_crs.setText(crs_info)
+
+        selected_features = selected_layer.selectedFeatures()
+        if len(selected_features) > 0:
+            # Create a new vector layer to hold the polygon feature
+            new_layer = QgsVectorLayer("Polygon?crs=" + crs.authid(), "Polygon Layer", "memory")
+            provider = new_layer.dataProvider()
+            new_layer.startEditing()
+
+            for feature in selected_features:
+                geom = feature.geometry()
+                poly_feature = QgsFeature()
+                poly_feature.setGeometry(geom)
+                provider.addFeature(poly_feature)
+
+            new_layer.commitChanges()
+            QgsProject.instance().addMapLayer(new_layer)
+
+            # Calculate and display the area
+            total_area = 0.0
+            for feature in new_layer.getFeatures():
+                total_area += feature.geometry().area()
+
+            self.label_area.setText(f"Total area: {total_area:.2f} square units")
+        else:
+            self.label_area.setText("No selected features")
