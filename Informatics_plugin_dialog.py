@@ -125,28 +125,29 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
             
     def area(self):
         selected_layer = self.mMapLayerComboBox.currentLayer()
-        
-        crs = selected_layer.crs().authid()
-        if 'EPSG:2180' in crs:  # EPSG:2180 is for PL-1992
+
+        crs = selected_layer.crs()
+        crs_authid = crs.authid() if crs else ''
+        if 'EPSG:2180' in crs_authid:  # EPSG:2180 is for PL-1992
             self.label_crs.setText('PL-1992')
-        elif 'EPSG:2176' in crs:  # EPSG:2176 to EPSG:2179 are for PL-2000
+        elif 'EPSG:2176' in crs_authid:  # EPSG:2176 to EPSG:2179 are for PL-2000
             self.label_crs.setText('PL-2000 (5)')
-        elif 'EPSG:2177' in crs:
+        elif 'EPSG:2177' in crs_authid:
             self.label_crs.setText('PL-2000 (6)')
-        elif 'EPSG:2178' in crs:
+        elif 'EPSG:2178' in crs_authid:
             self.label_crs.setText('PL-2000 (7)')
-        elif 'EPSG:2179' in crs:
+        elif 'EPSG:2179' in crs_authid:
             self.label_crs.setText('PL-2000 (8)')
 
         selected_features = selected_layer.selectedFeatures()
         points = [feature.geometry().asPoint() for feature in selected_features]
-        
+
         # Sort points in clockwise order
-        centroid = QgsPoint(sum(point.x() for point in points)/len(points), sum(point.y() for point in points)/len(points))
-        points.sort(key=lambda point: -atan2(point.y()-centroid.y(), point.x()-centroid.x()))
+        centroid = QgsPoint(sum(point.x() for point in points) / len(points), sum(point.y() for point in points) / len(points))
+        points.sort(key=lambda point: -atan2(point.y() - centroid.y(), point.x() - centroid.x()))
 
         # Calculate area using Gauss's area formula
-        area = 0.5 * abs(sum(points[i-1].x()*points[i].y() - points[i].x()*points[i-1].y() for i in range(len(points))))
+        area = 0.5 * abs(sum(points[i - 1].x() * points[i].y() - points[i].x() * points[i - 1].y() for i in range(len(points))))
 
         # Convert area to selected unit
         unit = self.comboBox_unit.currentText()
@@ -158,4 +159,20 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
             area *= 0.0001
 
         self.label_area.setText(f'Area: {area:.3f} {unit}')
+
+        if len(selected_features) > 0:
+            # Create a new vector layer to hold the polygon feature
+            new_layer = QgsVectorLayer("Polygon?crs=" + crs_authid, "Polygon Layer", "memory")
+            provider = new_layer.dataProvider()
+            new_layer.startEditing()
+
+            # Create a polygon feature
+            poly_feature = QgsFeature()
+            polygon = QgsGeometry.fromPolygonXY([points])
+            poly_feature.setGeometry(polygon)
+            provider.addFeature(poly_feature)
+
+            new_layer.commitChanges()
+            QgsProject.instance().addMapLayer(new_layer)
+
 
