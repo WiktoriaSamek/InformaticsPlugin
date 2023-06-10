@@ -16,7 +16,7 @@ class Ui_InformaticsPluginDialogBase(object):
         InformaticsPluginDialogBase.setObjectName("InformaticsPluginDialogBase")
         InformaticsPluginDialogBase.resize(764, 578)
         self.button_box = QtWidgets.QDialogButtonBox(InformaticsPluginDialogBase)
-        self.button_box.setGeometry(QtCore.QRect(300, 530, 341, 32))
+        self.button_box.setGeometry(QtCore.QRect(400, 540, 341, 32))
         self.button_box.setOrientation(QtCore.Qt.Horizontal)
         self.button_box.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.button_box.setObjectName("button_box")
@@ -102,6 +102,9 @@ class Ui_InformaticsPluginDialogBase(object):
         self.label_2.setGeometry(QtCore.QRect(520, 310, 131, 16))
         self.label_2.setText("")
         self.label_2.setObjectName("label_2")
+        self.pushbutton_clear = QtWidgets.QPushButton(InformaticsPluginDialogBase)
+        self.pushbutton_clear.setGeometry(QtCore.QRect(650, 500, 93, 28))
+        self.pushbutton_clear.setObjectName("pushbutton_clear")
         self.five.raise_()
         self.fore.raise_()
         self.tr.raise_()
@@ -110,6 +113,7 @@ class Ui_InformaticsPluginDialogBase(object):
         self.two.raise_()
         self.label_crs.raise_()
         self.label_2.raise_()
+        self.pushbutton_clear.raise_()
 
         self.retranslateUi(InformaticsPluginDialogBase)
         self.button_box.accepted.connect(InformaticsPluginDialogBase.accept) # type: ignore
@@ -131,6 +135,7 @@ class Ui_InformaticsPluginDialogBase(object):
         self.pushbutton_calculate.setText(_translate("InformaticsPluginDialogBase", "calculate"))
         self.fore.setTitle(_translate("InformaticsPluginDialogBase", "Hight"))
         self.pushbutton_hight.setText(_translate("InformaticsPluginDialogBase", "height"))
+        self.pushbutton_clear.setText(_translate("InformaticsPluginDialogBase", "clear"))
 from qgsmaplayercombobox import QgsMapLayerComboBox
 
 

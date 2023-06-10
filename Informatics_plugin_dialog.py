@@ -59,6 +59,7 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
         self.pushbutton_showcoordinates.clicked.connect(self.enter_data_on_marked_object)
         self.pushbutton_hight.clicked.connect(self.calculate_height_difference)
         self.pushbutton_calculate.clicked.connect(self.area)
+        self.pushbutton_clear.clicked.connect(self.clear_info)
         
     def count_objects(self):
         selected_features = self.mMapLayerComboBox.currentLayer().selectedFeatures()
@@ -174,5 +175,22 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
 
             new_layer.commitChanges()
             QgsProject.instance().addMapLayer(new_layer)
+            
+            
+    def clear_info(self):
+        self.label_select.setText("")
+        self.listObjects.clear()
+        self.listoHigh.setText("")
+        self.label_area.setText("")
+        self.label_crs.setText("")
+        self.label_active.setText("")
 
+        # Remove temporary polygon layer if it exists
+        existing_layer = None
+        for layer in QgsProject.instance().mapLayers().values():
+            if layer.name() == "Polygon Layer":
+                existing_layer = layer
+                break
 
+        if existing_layer:
+            QgsProject.instance().removeMapLayer(existing_layer.id())
