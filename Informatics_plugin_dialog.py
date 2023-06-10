@@ -23,7 +23,7 @@
 """
 
 import os
-
+from math import *
 from qgis.PyQt import uic
 from qgis.PyQt import QtWidgets
 from qgis.utils import iface
@@ -33,8 +33,12 @@ from qgis.core import (
     QgsCoordinateReferenceSystem,
     QgsGeometry,
     QgsFeature,
+    QgsField,
+    QgsFields,
     QgsVectorLayer,
-    QgsProject,)
+    QgsProject,
+    QgsPoint,
+)
 
 # This loads your .ui file so that PyQt can populate your plugin with the elements from Qt Designer
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -121,38 +125,39 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
             
     def area(self):
         selected_layer = self.mMapLayerComboBox.currentLayer()
-        crs = selected_layer.crs()
-
-        if crs.authid() == 'EPSG:2178':
-            crs_info = "PL-2000 + Zone " + crs.description()
-        elif crs.authid() == 'EPSG:2180':
-            crs_info = "PL-1992"
-        else:
-            crs_info = "Unknown CRS"
-
-        self.label_crs.setText(crs_info)
+        
+        crs = selected_layer.crs().authid()
+        if 'EPSG:2180' in crs:  # EPSG:2180 is for PL-1992
+            self.label_crs.setText('PL-1992')
+        elif 'EPSG:2176' in crs:  # EPSG:2176 to EPSG:2180 are for PL-2000
+            self.label_crs.setText('PL-2000 (5)')
+        elif 'EPSG:2177' in crs:
+            self.label_crs.setText('PL-2000 (6)')
+        elif 'EPSG:2178' in crs:
+            self.label_crs.setText('PL-2000 (7)')
+        elif 'EPSG:2179' in crs:
+            self.label_crs.setText('PL-2000 (8)')
+        elif 'EPSG:2180' in crs:
+            self.label_crs.setText('PL-2000 (9)')
 
         selected_features = selected_layer.selectedFeatures()
-        if len(selected_features) > 0:
-            # Create a new vector layer to hold the polygon feature
-            new_layer = QgsVectorLayer("Polygon?crs=" + crs.authid(), "Polygon Layer", "memory")
-            provider = new_layer.dataProvider()
-            new_layer.startEditing()
+        points = [feature.geometry().asPoint() for feature in selected_features]
+        
+        # Sort points in clockwise order
+        centroid = QgsPoint(sum(point.x() for point in points)/len(points), sum(point.y() for point in points)/len(points))
+        points.sort(key=lambda point: -atan2(point.y()-centroid.y(), point.x()-centroid.x()))
 
-            for feature in selected_features:
-                geom = feature.geometry()
-                poly_feature = QgsFeature()
-                poly_feature.setGeometry(geom)
-                provider.addFeature(poly_feature)
+        # Calculate area using Gauss's area formula
+        area = 0.5 * abs(sum(points[i-1].x()*points[i].y() - points[i].x()*points[i-1].y() for i in range(len(points))))
 
-            new_layer.commitChanges()
-            QgsProject.instance().addMapLayer(new_layer)
+        # Convert area to selected unit
+        unit = self.comboBox_unit.currentText()
+        if unit == 'm^2':
+            area = area
+        elif unit == 'Ary':
+            area *= 0.01
+        elif unit == 'Hektary':
+            area *= 0.0001
 
-            # Calculate and display the area
-            total_area = 0.0
-            for feature in new_layer.getFeatures():
-                total_area += feature.geometry().area()
+        self.label_area.setText(f'Area: {area:.3f} {unit}')
 
-            self.label_area.setText(f"Total area: {total_area:.2f} square units")
-        else:
-            self.label_area.setText("No selected features")
