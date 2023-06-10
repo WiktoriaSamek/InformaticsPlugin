@@ -47,7 +47,8 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
         self.pushbutton_count.clicked.connect(self.count_objects)
         self.pushbutton_showcoordinates.clicked.connect(self.enter_data_on_marked_object)
         self.pushbutton_hight.clicked.connect(self.calculate_height_difference)
-
+        self.pushbutton_calculate.clicked.connect(self.area)
+        
     def count_objects(self):
         selected_features = self.mMapLayerComboBox.currentLayer().selectedFeatures()
         number_of_selected_elements = len(selected_features)
@@ -94,15 +95,15 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
             feature1 = features[0]
             feature2 = features[1]
 
-            pnr1 = feature1["Nr"]
+            pnr1 = feature1["nr"]
             px1 = feature1["X"]
             py1 = feature1["Y"]
-            pz1 = feature1["Z"]
+            pz1 = feature1["H"]
 
-            pnr2 = feature2["Nr"]
+            pnr2 = feature2["nr"]
             px2 = feature2["X"]
             py2 = feature2["Y"]
-            pz2 = feature2["Z"]
+            pz2 = feature2["H"]
 
             H = pz2 - pz1
             self.listoHigh.setText(f'The calculated elevation between point {pnr1} and point {pnr2} is {H:.3f} m')
@@ -112,4 +113,21 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
             self.listoHigh.setText("Too many points were selected")
             
     def area(self):
-        pass
+        selected_layer = self.mMapLayerComboBox.currentLayer()
+        number_elements = len(selected_layer.selectedFeatures())
+
+        if number_elements >= 3:
+            features = selected_layer.selectedFeatures()
+            geom_type = features[0].geometry().type()
+            if geom_type == QgsWkbTypes.PolygonGeometry:
+                total_area = 0.0
+                for feature in features:
+                    geom = feature.geometry()
+                    if geom.type() == QgsWkbTypes.PolygonGeometry:
+                        total_area += geom.area()
+                self.label_area.setText(f'Total area: {total_area:.3f} square units')
+            else:
+                self.label_area.setText("Selected features are not polygons")
+        else:
+            self.label_area.setText("Not enough polygons selected")
+    
