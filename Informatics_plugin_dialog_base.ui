@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Informatics Plugin</string>
   </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
+  </property>
   <widget class="QDialogButtonBox" name="button_box">
    <property name="geometry">
     <rect>
@@ -38,6 +41,13 @@
      <height>201</height>
     </rect>
    </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: white;
+</string>
+   </property>
    <property name="title">
     <string/>
    </property>
@@ -62,6 +72,31 @@
       <width>160</width>
       <height>27</height>
      </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;ui version=&quot;4.0&quot;&gt;
+ &lt;widget name=&quot;__qt_fake_top_level&quot;&gt;
+  &lt;widget class=&quot;QPushButton&quot; name=&quot;pushbutton_count&quot;&gt;
+   &lt;property name=&quot;geometry&quot;&gt;
+    &lt;rect&gt;
+     &lt;x&gt;20&lt;/x&gt;
+     &lt;y&gt;160&lt;/y&gt;
+     &lt;width&gt;93&lt;/width&gt;
+     &lt;height&gt;28&lt;/height&gt;
+    &lt;/rect&gt;
+   &lt;/property&gt;
+   &lt;property name=&quot;text&quot;&gt;
+    &lt;string&gt;count&lt;/string&gt;
+   &lt;/property&gt;
+  &lt;/widget&gt;
+ &lt;/widget&gt;
+ &lt;resources/&gt;
+&lt;/ui&gt;
+</string>
     </property>
    </widget>
    <widget class="QLabel" name="Select_layer">
@@ -95,10 +130,17 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>220</y>
+     <y>230</y>
      <width>241</width>
      <height>331</height>
     </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: white;
+</string>
    </property>
    <property name="title">
     <string/>
@@ -174,6 +216,10 @@
      <width>221</width>
      <height>241</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: white;
+</string>
    </property>
    <property name="title">
     <string/>
@@ -299,6 +345,13 @@
      <width>241</width>
      <height>171</height>
     </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: white;
+</string>
    </property>
    <property name="title">
     <string/>

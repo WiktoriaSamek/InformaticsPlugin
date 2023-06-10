@@ -28,7 +28,8 @@ from qgis.PyQt import uic
 from qgis.PyQt import QtWidgets
 from qgis.utils import iface
 from qgis.core import QgsWkbTypes
-
+from PyQt5.QtGui import QFont
+from PyQt5.QtCore import QRectF, Qt
 from qgis.core import (
     QgsCoordinateReferenceSystem,
     QgsGeometry,
@@ -175,8 +176,7 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
 
             new_layer.commitChanges()
             QgsProject.instance().addMapLayer(new_layer)
-            
-            
+                  
     def clear_info(self):
         self.label_select.setText("")
         self.listObjects.clear()
@@ -194,3 +194,4 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
 
         if existing_layer:
             QgsProject.instance().removeMapLayer(existing_layer.id())
+            

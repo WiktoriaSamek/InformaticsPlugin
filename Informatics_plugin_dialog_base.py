@@ -15,6 +15,7 @@ class Ui_InformaticsPluginDialogBase(object):
     def setupUi(self, InformaticsPluginDialogBase):
         InformaticsPluginDialogBase.setObjectName("InformaticsPluginDialogBase")
         InformaticsPluginDialogBase.resize(764, 578)
+        InformaticsPluginDialogBase.setAutoFillBackground(True)
         self.button_box = QtWidgets.QDialogButtonBox(InformaticsPluginDialogBase)
         self.button_box.setGeometry(QtCore.QRect(400, 540, 341, 32))
         self.button_box.setOrientation(QtCore.Qt.Horizontal)
@@ -22,6 +23,9 @@ class Ui_InformaticsPluginDialogBase(object):
         self.button_box.setObjectName("button_box")
         self.one = QtWidgets.QGroupBox(InformaticsPluginDialogBase)
         self.one.setGeometry(QtCore.QRect(20, 20, 241, 201))
+        self.one.setAutoFillBackground(False)
+        self.one.setStyleSheet("background-color: white;\n"
+"")
         self.one.setTitle("")
         self.one.setObjectName("one")
         self.pushbutton_count = QtWidgets.QPushButton(self.one)
@@ -29,6 +33,27 @@ class Ui_InformaticsPluginDialogBase(object):
         self.pushbutton_count.setObjectName("pushbutton_count")
         self.mMapLayerComboBox = QgsMapLayerComboBox(self.one)
         self.mMapLayerComboBox.setGeometry(QtCore.QRect(10, 40, 160, 27))
+        self.mMapLayerComboBox.setAutoFillBackground(False)
+        self.mMapLayerComboBox.setStyleSheet("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+"<ui version=\"4.0\">\n"
+" <widget name=\"__qt_fake_top_level\">\n"
+"  <widget class=\"QPushButton\" name=\"pushbutton_count\">\n"
+"   <property name=\"geometry\">\n"
+"    <rect>\n"
+"     <x>20</x>\n"
+"     <y>160</y>\n"
+"     <width>93</width>\n"
+"     <height>28</height>\n"
+"    </rect>\n"
+"   </property>\n"
+"   <property name=\"text\">\n"
+"    <string>count</string>\n"
+"   </property>\n"
+"  </widget>\n"
+" </widget>\n"
+" <resources/>\n"
+"</ui>\n"
+"")
         self.mMapLayerComboBox.setObjectName("mMapLayerComboBox")
         self.Select_layer = QtWidgets.QLabel(self.one)
         self.Select_layer.setGeometry(QtCore.QRect(10, 10, 101, 16))
@@ -38,7 +63,10 @@ class Ui_InformaticsPluginDialogBase(object):
         self.label_select.setText("")
         self.label_select.setObjectName("label_select")
         self.two = QtWidgets.QGroupBox(InformaticsPluginDialogBase)
-        self.two.setGeometry(QtCore.QRect(20, 220, 241, 331))
+        self.two.setGeometry(QtCore.QRect(20, 230, 241, 331))
+        self.two.setAutoFillBackground(False)
+        self.two.setStyleSheet("background-color: white;\n"
+"")
         self.two.setTitle("")
         self.two.setObjectName("two")
         self.pushbutton_showcoordinates = QtWidgets.QPushButton(self.two)
@@ -59,6 +87,8 @@ class Ui_InformaticsPluginDialogBase(object):
         self.label_active.setObjectName("label_active")
         self.tr = QtWidgets.QGroupBox(InformaticsPluginDialogBase)
         self.tr.setGeometry(QtCore.QRect(270, 20, 221, 241))
+        self.tr.setStyleSheet("background-color: white;\n"
+"")
         self.tr.setTitle("")
         self.tr.setObjectName("tr")
         self.label_area = QtWidgets.QLabel(self.tr)
@@ -92,6 +122,9 @@ class Ui_InformaticsPluginDialogBase(object):
         self.listoHigh.setObjectName("listoHigh")
         self.five = QtWidgets.QGroupBox(InformaticsPluginDialogBase)
         self.five.setGeometry(QtCore.QRect(500, 20, 241, 171))
+        self.five.setAutoFillBackground(False)
+        self.five.setStyleSheet("background-color: white;\n"
+"")
         self.five.setTitle("")
         self.five.setObjectName("five")
         self.label_crs = QtWidgets.QLabel(InformaticsPluginDialogBase)
