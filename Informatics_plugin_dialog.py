@@ -47,21 +47,21 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
         self.pushbutton_count.clicked.connect(self.count_objects)
         self.pushbutton_showcoordinates.clicked.connect(self.enter_data_on_marked_object)
         self.pushbutton_hight.clicked.connect(self.calculate_height_difference)
-    
+
     def count_objects(self):
-        selected_features = self.mMapLayerComboBox.currentLayer().selectedFeatures() 
+        selected_features = self.mMapLayerComboBox.currentLayer().selectedFeatures()
         number_of_selected_elements = len(selected_features)
-        self.label_select.setText(str(number_of_selected_elements))    
-    
+        self.label_select.setText(str(number_of_selected_elements))
+
     def enter_data_on_marked_object(self):
         active_layer = iface.activeLayer()
         sel_features = active_layer.selectedFeatures()
         self.label_active.setText(active_layer.name())
-        
+
         for feature in sel_features:
             geom = feature.geometry()
             geomSingleType = QgsWkbTypes.isSingleType(geom.wkbType())
-            
+
             if geom.type() == QgsWkbTypes.PointGeometry:
                 if geomSingleType:
                     x = geom.asPoint()
@@ -85,29 +85,31 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
                     self.listObjects.append(f'MultiPolygon:3{str(x)},3\r\n')
             else:
                 print("Unknown_or_invalid geometry")
-                
-    def calculate_height_difference(self): 
+
+    def calculate_height_difference(self):
         selected_layer = self.mMapLayerComboBox.currentLayer()
-        number_elements  = len(selected_layer.selectedFeatures())       
-        if number_elements == 2: 
-            Nr = []
-            X = []
-            Y = []
-            Z = []
-            selected_elements = selected_layer.selectedFeatures()        
-            for elementy in selected_elements:
-                pnr = elementy["Nr"]
-                px = elementy["X"]
-                py = elementy["Y"]
-                pz = elementy["Z"]
-                Nr.append(pnr)
-                X.append(px)
-                Y.append(py)
-                Z.append(pz)
-            H = Z[1] - Z[0]
-            self.listoHigh.setText(f'The calculated elevation between point {Nr[0]} and point {Nr[1]} is {H:.3f} m')   
+        number_elements = len(selected_layer.selectedFeatures())
+        if number_elements == 2:
+            features = selected_layer.selectedFeatures()
+            feature1 = features[0]
+            feature2 = features[1]
+
+            pnr1 = feature1["Nr"]
+            px1 = feature1["X"]
+            py1 = feature1["Y"]
+            pz1 = feature1["Z"]
+
+            pnr2 = feature2["Nr"]
+            px2 = feature2["X"]
+            py2 = feature2["Y"]
+            pz2 = feature2["Z"]
+
+            H = pz2 - pz1
+            self.listoHigh.setText(f'The calculated elevation between point {pnr1} and point {pnr2} is {H:.3f} m')
         elif number_elements < 2:
             self.listoHigh.setText("Not enough points selected")
-        else number_elements > 2:
-            self.listoHigh.setText("Too many points were selected ")
+        else:
+            self.listoHigh.setText("Too many points were selected")
             
+    def area(self):
+        pass
