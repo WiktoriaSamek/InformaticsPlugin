@@ -26,6 +26,8 @@ import os
 
 from qgis.PyQt import uic
 from qgis.PyQt import QtWidgets
+from qgis.utils import iface
+from qgis.core import QgsWkbTypes
 
 # This loads your .ui file so that PyQt can populate your plugin with the elements from Qt Designer
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -42,3 +44,74 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
         # http://qt-project.org/doc/qt-4.8/designer-using-a-ui-file.html
         # #widgets-and-dialogs-with-auto-connect
         self.setupUi(self)
+        self.pushbutton_count.clicked.connect(self.count_objects)
+        self.pushbutton_showcoordinates.clicked.connect(self.enter_data_on_marked_object)
+        self.pushbutton_hight.clicked.connect(self.calculate_height_difference)
+    
+    def count_objects(self):
+        selected_features = self.mMapLayerComboBox.currentLayer().selectedFeatures() 
+        number_of_selected_elements = len(selected_features)
+        self.label_select.setText(str(number_of_selected_elements))    
+    
+    def enter_data_on_marked_object(self):
+        active_layer = iface.activeLayer()
+        sel_features = active_layer.selectedFeatures()
+        self.label_active.setText(active_layer.name())
+        
+        for feature in sel_features:
+            geom = feature.geometry()
+            geomSingleType = QgsWkbTypes.isSingleType(geom.wkbType())
+            
+            if geom.type() == QgsWkbTypes.PointGeometry:
+                if geomSingleType:
+                    x = geom.asPoint()
+                    self.listObjects.append(f'Point:3{str(x)},3\r\n')
+                else:
+                    x = geom.asMultiPoint()
+                    self.listObjects.append(f'MultiPoint:3{str(x)},3\r\n')
+            elif geom.type() == QgsWkbTypes.LineGeometry:
+                if geomSingleType:
+                    x = geom.asPolyline()
+                    self.listObjects.append(f'Polyline:3{str(x)},3\r\n')
+                else:
+                    x = geom.asMultiPolyline()
+                    self.listObjects.append(f'Polyline:3{str(x)},3\r\n')
+            elif geom.type() == QgsWkbTypes.PolygonGeometry:
+                if geomSingleType:
+                    x = geom.asPolygon()
+                    self.listObjects.append(f'Polygon:3{str(x)},3\r\n')
+                else:
+                    x = geom.asMultiPolygon()
+                    self.listObjects.append(f'MultiPolygon:3{str(x)},3\r\n')
+            else:
+                print("Unknown_or_invalid geometry")
+                
+    def calculate_height_difference(self): 
+        warstwa = self.mMapLayerComboBox.currentLayer()
+        liczba_elementów = len(warstwa.selectedFeatures())
+        
+        if liczba_elementów == 2: 
+            Nr = []
+            X = []
+            Y = []
+            Z = []
+            wybrane_elementy = warstwa.selectedFeatures() 
+            
+            for elementy in wybrane_elementy:
+                pnr = elementy["Nr"]
+                px = elementy["X"]
+                py = elementy["Y"]
+                pz = elementy["Z"]
+                Nr.append(pnr)
+                X.append(px)
+                Y.append(py)
+                Z.append(pz)
+            
+            H = Z[1] - Z[0]
+            self.listoHigh.setText(f'Między {Nr[0]} a {Nr[1]} wynosi {H:.3f} m')
+        
+        elif liczba_elementów < 2:
+            self.listoHigh.setText("Wybrano za mało punktów")
+        
+        elif liczba_elementów > 2:
+            self.listoHigh.setText("Wybrano za dużo punktów")
