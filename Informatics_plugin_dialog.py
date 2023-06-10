@@ -129,7 +129,7 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
         crs = selected_layer.crs().authid()
         if 'EPSG:2180' in crs:  # EPSG:2180 is for PL-1992
             self.label_crs.setText('PL-1992')
-        elif 'EPSG:2176' in crs:  # EPSG:2176 to EPSG:2180 are for PL-2000
+        elif 'EPSG:2176' in crs:  # EPSG:2176 to EPSG:2179 are for PL-2000
             self.label_crs.setText('PL-2000 (5)')
         elif 'EPSG:2177' in crs:
             self.label_crs.setText('PL-2000 (6)')
@@ -137,8 +137,6 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
             self.label_crs.setText('PL-2000 (7)')
         elif 'EPSG:2179' in crs:
             self.label_crs.setText('PL-2000 (8)')
-        elif 'EPSG:2180' in crs:
-            self.label_crs.setText('PL-2000 (9)')
 
         selected_features = selected_layer.selectedFeatures()
         points = [feature.geometry().asPoint() for feature in selected_features]
