@@ -271,7 +271,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>hight</string>
+     <string>height</string>
     </property>
    </widget>
    <widget class="QLabel" name="listoHigh">

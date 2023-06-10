@@ -130,7 +130,7 @@ class Ui_InformaticsPluginDialogBase(object):
         self.comboBox_unit.setItemText(2, _translate("InformaticsPluginDialogBase", "Hektary"))
         self.pushbutton_calculate.setText(_translate("InformaticsPluginDialogBase", "calculate"))
         self.fore.setTitle(_translate("InformaticsPluginDialogBase", "Hight"))
-        self.pushbutton_hight.setText(_translate("InformaticsPluginDialogBase", "hight"))
+        self.pushbutton_hight.setText(_translate("InformaticsPluginDialogBase", "height"))
 from qgsmaplayercombobox import QgsMapLayerComboBox
 
 
