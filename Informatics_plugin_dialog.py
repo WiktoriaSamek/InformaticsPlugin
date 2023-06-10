@@ -87,17 +87,15 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
                 print("Unknown_or_invalid geometry")
                 
     def calculate_height_difference(self): 
-        warstwa = self.mMapLayerComboBox.currentLayer()
-        liczba_elementów = len(warstwa.selectedFeatures())
-        
-        if liczba_elementów == 2: 
+        selected_layer = self.mMapLayerComboBox.currentLayer()
+        number_elements  = len(selected_layer.selectedFeatures())       
+        if number_elements == 2: 
             Nr = []
             X = []
             Y = []
             Z = []
-            wybrane_elementy = warstwa.selectedFeatures() 
-            
-            for elementy in wybrane_elementy:
+            selected_elements = selected_layer.selectedFeatures()        
+            for elementy in selected_elements:
                 pnr = elementy["Nr"]
                 px = elementy["X"]
                 py = elementy["Y"]
@@ -106,12 +104,10 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
                 X.append(px)
                 Y.append(py)
                 Z.append(pz)
-            
             H = Z[1] - Z[0]
-            self.listoHigh.setText(f'Między {Nr[0]} a {Nr[1]} wynosi {H:.3f} m')
-        
-        elif liczba_elementów < 2:
-            self.listoHigh.setText("Wybrano za mało punktów")
-        
-        elif liczba_elementów > 2:
-            self.listoHigh.setText("Wybrano za dużo punktów")
+            self.listoHigh.setText(f'The calculated elevation between point {Nr[0]} and point {Nr[1]} is {H:.3f} m')   
+        elif number_elements < 2:
+            self.listoHigh.setText("Not enough points selected")
+        else number_elements > 2:
+            self.listoHigh.setText("Too many points were selected ")
+            
