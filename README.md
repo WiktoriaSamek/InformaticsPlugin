@@ -37,4 +37,12 @@ To ensure proper functioning of the plugin, you need to either import a .csv fil
 ```sh
 Nr X Y H
 ```
+Input file needs to look like this one:
+```sh
+nr;X;Y;H
+1;352600;672600;198,34
+2;352600;672700;197,49
+3;352600;672800;199,61
+4;352700;672500;185,96
+```
 and that the values in these columns are floating-point numbers.
