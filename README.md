@@ -17,28 +17,28 @@ The QGIS InformaticsPlugin offers the following functionalities:
 
 The "Count Objects" feature allows the user to count the number of selected points. To use this feature, follow these steps:
 1. Select the points on the map.
-2. Open the plugin and click the "Count" button.
+2. Open the plugin, select "General" and click the "Count" button.
 3. The plugin will display the number of selected points.
 
 ### 2. Show Coordinates
 
 The "Show Coordinates" feature displays the coordinates of the selected points. To use this feature, follow these steps:
 1. Select the points on the map.
-2. Open the plugin and click the "Show Coordinates" button.
+2. Open the plugin, select "Description" and click the "Show Coordinates" button.
 3. The plugin will display the coordinates of the selected points.
 
 ### 3. Calculate Area
 
 The "Calculate Area" feature calculates the area of a polygon formed by the selected points using the Gauss method. To use this feature, follow these steps:
 1. Select the points that form a closed polygon.
-2. Open the plugin and click the "Calculate" button.
+2. Open the plugin, select "Area" and click the "Calculate" button.
 3. The plugin will display the calculated area of the polygon in the user-selected units and the coordinate system (+ zone).
 
 ### 4. Calculate Height Difference
 
 The "Calculate Height Difference" feature calculates the height difference between two selected points. To use this feature, follow these steps:
 1. Select two points on the map.
-2. Open the plugin and click the "Height" button.
+2. Open the plugi, select "Elevation" and click the "Height" button.
 3. The plugin will display the calculated height difference between the two points.
 
 ## Additional comments:
@@ -59,6 +59,7 @@ To ensure proper functioning of the plugin, you need to either import a .csv fil
 ```sh
 Nr X[m] Y[m] H[m]
 ```
+To add an input file, you need to use the Profile Tool plugin.
 Input file needs to look like this one:
 ```sh
 nr;X;Y;H
