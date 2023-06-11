@@ -32,7 +32,7 @@ The "Show Coordinates" feature displays the coordinates of the selected points. 
 The "Calculate Area" feature calculates the area of a polygon formed by the selected points using the Gauss method. To use this feature, follow these steps:
 1. Select the points that form a closed polygon.
 2. Open the plugin, select "Area" and click the "Calculate" button.
-3. The plugin will display the calculated area of the polygon in the user-selected units and the coordinate system (+ zone).
+3. The plugin will display the calculated area of the polygon in the user-selected units, the coordinate system (+zone) and create new layer for that polygon.
 
 ### 4. Calculate Height Difference
 
@@ -55,7 +55,8 @@ Too many points were selected
 ```
 
 ## Technical Notes:
-To ensure proper functioning of the plugin, you need to either import a .csv file similar to the one provided above into QGIS or use any other method to ensure that the attribute table contains columns with the following names:
+-The "Clear All" option deletes all calculations and newly created temporary layers.
+-To ensure proper functioning of the plugin, you need to either import a .csv file similar to the one provided above into QGIS or use any other method to ensure that the attribute table contains columns with the following names:
 ```sh
 Nr X[m] Y[m] H[m]
 ```
