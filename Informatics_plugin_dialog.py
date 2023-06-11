@@ -79,26 +79,33 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
             if geom.type() == QgsWkbTypes.PointGeometry:
                 if geomSingleType:
                     x = geom.asPoint()
-                    self.listObjects.append(f'Point:3{str(x)},3\r\n')
+                    x_str = f'nr: {feature.attribute("nr")}, X: {x.x():.3f}, Y: {x.y():.3f}\r\n'
+                    self.listObjects.append(x_str)
                 else:
                     x = geom.asMultiPoint()
-                    self.listObjects.append(f'MultiPoint:3{str(x)},3\r\n')
+                    x_str = f'MultiPoint {feature.attribute("nr")}: {str(x)},3\r\n'
+                    self.listObjects.append(x_str)
             elif geom.type() == QgsWkbTypes.LineGeometry:
                 if geomSingleType:
                     x = geom.asPolyline()
-                    self.listObjects.append(f'Polyline:3{str(x)},3\r\n')
+                    x_str = f'Polyline {feature.attribute("nr")}: {str(x)},3\r\n'
+                    self.listObjects.append(x_str)
                 else:
                     x = geom.asMultiPolyline()
-                    self.listObjects.append(f'Polyline:3{str(x)},3\r\n')
+                    x_str = f'MultiPolyline {feature.attribute("nr")}: {str(x)},3\r\n'
+                    self.listObjects.append(x_str)
             elif geom.type() == QgsWkbTypes.PolygonGeometry:
                 if geomSingleType:
                     x = geom.asPolygon()
-                    self.listObjects.append(f'Polygon:3{str(x)},3\r\n')
+                    x_str = f'Polygon {feature.attribute("nr")}: {str(x)},3\r\n'
+                    self.listObjects.append(x_str)
                 else:
                     x = geom.asMultiPolygon()
-                    self.listObjects.append(f'MultiPolygon:3{str(x)},3\r\n')
+                    x_str = f'MultiPolygon {feature.attribute("nr")}: {str(x)},3\r\n'
+                    self.listObjects.append(x_str)
             else:
-                print("Unknown_or_invalid geometry")
+                print("Unknown or invalid geometry")
+
 
     def calculate_height_difference(self):
         selected_layer = self.mMapLayerComboBox.currentLayer()
@@ -155,9 +162,9 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
         unit = self.comboBox_unit.currentText()
         if unit == 'm^2':
             area = area
-        elif unit == 'Ary':
+        elif unit == 'Are':
             area *= 0.01
-        elif unit == 'Hektary':
+        elif unit == 'Hectare':
             area *= 0.0001
 
         self.label_area.setText(f'Area: {area:.3f} {unit}')
