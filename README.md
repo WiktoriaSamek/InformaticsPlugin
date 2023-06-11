@@ -60,7 +60,7 @@ Too many points were selected
 ```sh
 Nr X[m] Y[m] H[m]
 ```
-To add an input file, you need to use the Profile Tool plugin.
+To add an input file, you need to use option: layer -> add a layer -> add a CSV text layer.
 Input file needs to look like this one:
 ```sh
 nr;X;Y;H
