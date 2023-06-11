@@ -1,26 +1,48 @@
 # QGIS InformaticsPlugin
-The plugin is used for counting selected points, displaying coordinates of selected points, calculating height differences between 2 points, and calculating the area of a polygon formed by points using the Gauss method, as well as displaying their coordinate system (+ zones).
 
-## Minimum hardware requirements:
-- Windows 10  
-- Qgis: 3.28.4
+The QGIS InformaticsPlugin is a plugin designed for performing various geospatial calculations and operations. It provides functionalities such as counting selected points, displaying coordinates of selected points, calculating height differences between two points, and calculating the area of a polygon formed by points using the Gauss method. It also displays the coordinate system and zone information.
 
-## Plugin Work Description:
-1.The user selects points accordingly for calculating height differences or area. <br/>
-2. Then, the user opens the plugin and clicks the appropriate button for the desired action.
-```sh
-count
-```
-```sh
-show coordinates
-```
-```sh
-calculate
-```
-```sh
-height
-```
-3. The result is displayed above the button.
+## Minimum Requirements
+
+To use the QGIS InformaticsPlugin, make sure you have the following minimum hardware and software requirements:
+
+- Operating System: Windows 10
+- QGIS Version: 3.28.4
+
+## Plugin Functionality
+
+The QGIS InformaticsPlugin offers the following functionalities:
+
+### 1. Count Objects
+
+The "Count Objects" feature allows the user to count the number of selected points. To use this feature, follow these steps:
+1. Select the points on the map.
+2. Open the plugin and click the "Count" button.
+3. The plugin will display the number of selected points.
+
+### 2. Show Coordinates
+
+The "Show Coordinates" feature displays the coordinates of the selected points. To use this feature, follow these steps:
+1. Select the points on the map.
+2. Open the plugin and click the "Show Coordinates" button.
+3. The plugin will display the coordinates of the selected points.
+
+### 3. Calculate Area
+
+The "Calculate Area" feature calculates the area of a polygon formed by the selected points using the Gauss method. To use this feature, follow these steps:
+1. Select the points that form a closed polygon.
+2. Open the plugin and click the "Calculate" button.
+3. The plugin will display the calculated area of the polygon in the user-selected units and the coordinate system (+ zone).
+
+### 4. Calculate Height Difference
+
+The "Calculate Height Difference" feature calculates the height difference between two selected points. To use this feature, follow these steps:
+1. Select two points on the map.
+2. Open the plugin and click the "Height" button.
+3. The plugin will display the calculated height difference between the two points.
+
+## Additional comments:
+If the file contains layers with points in different coordinate systems, before selecting specific points, user should select the respective layer on the left side of the window.
 
 ## Possible Errors:
 If the user does not select a point or selects too few points for a specific calculation, an error will appear:
@@ -35,7 +57,7 @@ Too many points were selected
 ## Technical Notes:
 To ensure proper functioning of the plugin, you need to either import a .csv file similar to the one provided above into QGIS or use any other method to ensure that the attribute table contains columns with the following names:
 ```sh
-Nr X Y H
+Nr X[m] Y[m] H[m]
 ```
 Input file needs to look like this one:
 ```sh
@@ -45,4 +67,6 @@ nr;X;Y;H
 3;352600;672800;199,61
 4;352700;672500;185,96
 ```
-and that the values in these columns are floating-point numbers.
+The input file should be formatted similar to the example provided above, with the column names in the first row and the corresponding values in subsequent rows. The values in the columns should be floating-point numbers.
+
+For any technical issues or further information, please refer to the plugin documentation or contact the plugin developers.
