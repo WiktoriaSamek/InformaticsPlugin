@@ -41,6 +41,10 @@ The "Calculate Height Difference" feature calculates the height difference betwe
 2. Open the plugi, select "Elevation" and click the "Height" button.
 3. The plugin will display the calculated height difference between the two points.
 
+### 5. Report
+
+An additional function was created to generate a report in the txt extension.
+
 ## Additional comments:
 If the file contains layers with points in different coordinate systems, before selecting specific points, user should select the respective layer on the left side of the window.
 Close button also clear all calculations, unlike "x" button, which only close a calculation's window without deleting newcome informations (layers etc.).
