@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>562</width>
-    <height>327</height>
+    <height>325</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,35 +16,6 @@
   <property name="autoFillBackground">
    <bool>true</bool>
   </property>
-  <widget class="QDialogButtonBox" name="button_box">
-   <property name="geometry">
-    <rect>
-     <x>340</x>
-     <y>280</y>
-     <width>201</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Times New Roman</family>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="autoFillBackground">
-    <bool>true</bool>
-   </property>
-   <property name="styleSheet">
-    <string notr="true"/>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
-   </property>
-   <property name="standardButtons">
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-   </property>
-  </widget>
   <widget class="QTabWidget" name="tab">
    <property name="geometry">
     <rect>
@@ -600,8 +571,8 @@
        <rect>
         <x>120</x>
         <y>80</y>
-        <width>291</width>
-        <height>21</height>
+        <width>381</width>
+        <height>31</height>
        </rect>
       </property>
       <property name="text">
@@ -704,6 +675,26 @@
    </property>
    <property name="text">
     <string>Clear all</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushbutton_close">
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>280</y>
+     <width>93</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Times New Roman</family>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Close</string>
    </property>
   </widget>
  </widget>

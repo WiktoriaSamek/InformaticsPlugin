@@ -61,6 +61,7 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
         self.pushbutton_hight.clicked.connect(self.calculate_height_difference)
         self.pushbutton_calculate.clicked.connect(self.area)
         self.pushbutton_clear.clicked.connect(self.clear_info)
+        self.pushbutton_close.clicked.connect(self.closePlugin)
         
     def count_objects(self):
         selected_features = self.mMapLayerComboBox.currentLayer().selectedFeatures()
@@ -151,6 +152,10 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
         selected_features = selected_layer.selectedFeatures()
         points = [feature.geometry().asPoint() for feature in selected_features]
 
+        if len(points) < 3:
+            self.label_area.setText("Not enough points selected")
+            return
+
         # Sort points in clockwise order
         centroid = QgsPoint(sum(point.x() for point in points) / len(points), sum(point.y() for point in points) / len(points))
         points.sort(key=lambda point: -atan2(point.y() - centroid.y(), point.x() - centroid.x()))
@@ -171,18 +176,30 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
 
         if len(selected_features) > 0:
             # Create a new vector layer to hold the polygon feature
-            new_layer = QgsVectorLayer("Polygon?crs=" + crs_authid, "Polygon Layer", "memory")
-            provider = new_layer.dataProvider()
-            new_layer.startEditing()
+            if len(points) >= 3:
+                new_layer = QgsVectorLayer("Polygon?crs=" + crs_authid, "Polygon Layer", "memory")
+                provider = new_layer.dataProvider()
+                new_layer.startEditing()
 
-            # Create a polygon feature
-            poly_feature = QgsFeature()
-            polygon = QgsGeometry.fromPolygonXY([points])
-            poly_feature.setGeometry(polygon)
-            provider.addFeature(poly_feature)
+                # Create a polygon feature
+                poly_feature = QgsFeature()
+                polygon = QgsGeometry.fromPolygonXY([points])
+                poly_feature.setGeometry(polygon)
+                provider.addFeature(poly_feature)
 
-            new_layer.commitChanges()
-            QgsProject.instance().addMapLayer(new_layer)
+                new_layer.commitChanges()
+                QgsProject.instance().addMapLayer(new_layer)
+            else:
+                # Remove temporary polygon layer if it exists
+                existing_layer = None
+                for layer in QgsProject.instance().mapLayers().values():
+                    if layer.name() == "Polygon Layer":
+                        existing_layer = layer
+                        break
+
+                if existing_layer:
+                    QgsProject.instance().removeMapLayer(existing_layer.id())
+
                   
     def clear_info(self):
         self.label_select.setText("")
@@ -202,3 +219,21 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
         if existing_layer:
             QgsProject.instance().removeMapLayer(existing_layer.id())
             
+    def closePlugin(self):
+        self.label_select.setText("")
+        self.listObjects.clear()
+        self.listoHigh.setText("")
+        self.label_area.setText("")
+        self.label_crs.setText("")
+        self.label_active.setText("")
+
+        existing_layer = None
+        for layer in QgsProject.instance().mapLayers().values():
+            if layer.name() == "Polygon Layer":
+                existing_layer = layer
+                break
+
+        if existing_layer:
+            QgsProject.instance().removeMapLayer(existing_layer.id())
+
+        self.close()
