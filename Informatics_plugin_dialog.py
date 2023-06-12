@@ -25,10 +25,12 @@
 import os
 from math import *
 from qgis.PyQt import uic
+from PyQt5 import QtCore
 from qgis.PyQt import QtWidgets
 from qgis.utils import iface
 from qgis.core import QgsWkbTypes
 from PyQt5.QtGui import QFont
+from datetime import datetime
 from PyQt5.QtCore import QRectF, Qt
 from qgis.core import (
     QgsCoordinateReferenceSystem,
@@ -62,6 +64,9 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
         self.pushbutton_calculate.clicked.connect(self.area)
         self.pushbutton_clear.clicked.connect(self.clear_info)
         self.pushbutton_close.clicked.connect(self.closePlugin)
+        self.pushbutton_report.clicked.connect(self.generate_report)
+        self.setWindowTitle('Raport Informatics Plugin')
+        self.current_date = datetime.now()
         
     def count_objects(self):
         selected_features = self.mMapLayerComboBox.currentLayer().selectedFeatures()
@@ -73,6 +78,9 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
         sel_features = active_layer.selectedFeatures()
         self.label_active.setText(active_layer.name())
 
+        # Przygotuj zmienną do przechowywania współrzędnych
+        coordinates = []
+
         for feature in sel_features:
             geom = feature.geometry()
             geomSingleType = QgsWkbTypes.isSingleType(geom.wkbType())
@@ -80,32 +88,36 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
             if geom.type() == QgsWkbTypes.PointGeometry:
                 if geomSingleType:
                     x = geom.asPoint()
-                    x_str = f'nr: {feature.attribute("nr")}, X: {x.x():.3f}, Y: {x.y():.3f}\r\n'
-                    self.listObjects.append(x_str)
+                    x_str = f'nr: {feature.attribute("nr")}, X: {x.x():.3f}, Y: {x.y():.3f}'
+                    coordinates.append(x_str)
                 else:
                     x = geom.asMultiPoint()
-                    x_str = f'MultiPoint {feature.attribute("nr")}: {str(x)},3\r\n'
-                    self.listObjects.append(x_str)
+                    x_str = f'MultiPoint {feature.attribute("nr")}: {str(x)}'
+                    coordinates.append(x_str)
             elif geom.type() == QgsWkbTypes.LineGeometry:
                 if geomSingleType:
                     x = geom.asPolyline()
-                    x_str = f'Polyline {feature.attribute("nr")}: {str(x)},3\r\n'
-                    self.listObjects.append(x_str)
+                    x_str = f'Polyline {feature.attribute("nr")}: {str(x)}'
+                    coordinates.append(x_str)
                 else:
                     x = geom.asMultiPolyline()
-                    x_str = f'MultiPolyline {feature.attribute("nr")}: {str(x)},3\r\n'
-                    self.listObjects.append(x_str)
+                    x_str = f'MultiPolyline {feature.attribute("nr")}: {str(x)}'
+                    coordinates.append(x_str)
             elif geom.type() == QgsWkbTypes.PolygonGeometry:
                 if geomSingleType:
                     x = geom.asPolygon()
-                    x_str = f'Polygon {feature.attribute("nr")}: {str(x)},3\r\n'
-                    self.listObjects.append(x_str)
+                    x_str = f'Polygon {feature.attribute("nr")}: {str(x)}'
+                    coordinates.append(x_str)
                 else:
                     x = geom.asMultiPolygon()
-                    x_str = f'MultiPolygon {feature.attribute("nr")}: {str(x)},3\r\n'
-                    self.listObjects.append(x_str)
+                    x_str = f'MultiPolygon {feature.attribute("nr")}: {str(x)}'
+                    coordinates.append(x_str)
             else:
                 print("Unknown or invalid geometry")
+
+        # Wyświetl współrzędne w QTextEdit
+        self.listObjects.setPlainText("\n".join(coordinates))
+
 
 
     def calculate_height_difference(self):
@@ -237,3 +249,32 @@ class InformaticsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
             QgsProject.instance().removeMapLayer(existing_layer.id())
 
         self.close()
+        
+        
+    def generate_report(self):
+        save_path, _ = QtWidgets.QFileDialog.getSaveFileName(self, 'Save a text report', '', 'Text Files (*.txt)')
+
+        if save_path:
+            current_date = QtCore.QDateTime.currentDateTime().toString("yyyy-MM-dd HH:mm:ss")
+
+            with open(save_path, 'w') as file:
+                file.write("Raport Informatics Plugin\n\n")
+                file.write("Date the report was created: {}\n\n".format(current_date))
+                file.write("Brief report of calculations of selected points\n\n")
+                file.write("Active layer:\n")
+                file.write("Number of points selected: " + self.label_select.text() + "\n\n")
+                file.write("Summary of the coordinates of these points:\n")
+
+                point_data = self.listObjects.toPlainText()
+                file.write(point_data)
+
+                file.write("\n\nCalculated elevation:\n")
+                file.write(self.listoHigh.text() + "\n\n")
+                file.write("Calculated surface area:\n")
+                file.write(self.label_area.text() + "\n\n")
+                file.write("Coordinate system of selected points:\n")
+                file.write(self.label_crs.text() + "\n")
+
+            QtWidgets.QMessageBox.information(self, 'Report generated', f'The report was recorded as {save_path}.')
+        else:
+            QtWidgets.QMessageBox.warning(self, 'Recording error', 'Report storage path not selected.')

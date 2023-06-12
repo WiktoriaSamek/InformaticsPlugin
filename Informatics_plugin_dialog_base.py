@@ -197,6 +197,7 @@ class Ui_InformaticsPluginDialogBase(object):
         self.tab_2.setObjectName("tab_2")
         self.groupBox_4 = QtWidgets.QGroupBox(self.tab_2)
         self.groupBox_4.setGeometry(QtCore.QRect(10, 10, 511, 211))
+        self.groupBox_4.setAutoFillBackground(True)
         self.groupBox_4.setTitle("")
         self.groupBox_4.setObjectName("groupBox_4")
         self.Select_layer_8 = QtWidgets.QLabel(self.groupBox_4)
@@ -286,6 +287,14 @@ class Ui_InformaticsPluginDialogBase(object):
         font.setWeight(75)
         self.pushbutton_close.setFont(font)
         self.pushbutton_close.setObjectName("pushbutton_close")
+        self.pushbutton_report = QtWidgets.QPushButton(InformaticsPluginDialogBase)
+        self.pushbutton_report.setGeometry(QtCore.QRect(180, 280, 201, 28))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushbutton_report.setFont(font)
+        self.pushbutton_report.setObjectName("pushbutton_report")
 
         self.retranslateUi(InformaticsPluginDialogBase)
         self.tab.setCurrentIndex(3)
@@ -316,6 +325,7 @@ class Ui_InformaticsPluginDialogBase(object):
         self.tab.setTabText(self.tab.indexOf(self.tab_2), _translate("InformaticsPluginDialogBase", "Area"))
         self.pushbutton_clear.setText(_translate("InformaticsPluginDialogBase", "Clear all"))
         self.pushbutton_close.setText(_translate("InformaticsPluginDialogBase", "Close"))
+        self.pushbutton_report.setText(_translate("InformaticsPluginDialogBase", "Generate report"))
 from qgsmaplayercombobox import QgsMapLayerComboBox
 
 
