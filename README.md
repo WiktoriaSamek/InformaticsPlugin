@@ -43,6 +43,7 @@ The "Calculate Height Difference" feature calculates the height difference betwe
 
 ## Additional comments:
 If the file contains layers with points in different coordinate systems, before selecting specific points, user should select the respective layer on the left side of the window.
+Close button also clear all calculations, unlike "x" button, which only close a calculation's window without deleting newcome informations (layers etc.).
 
 ## Possible Errors:
 If the user does not select a point or selects too few points for a specific calculation, an error will appear:
@@ -71,4 +72,4 @@ nr;X;Y;H
 ```
 The input file should be formatted similar to the example provided above, with the column names in the first row and the corresponding values in subsequent rows. The values in the columns should be floating-point numbers.
 
-For any technical issues or further information, please refer to the plugin documentation or contact the plugin developers.
+For any technical issues or further information, please refer to the plugin documentation or contact the plugin developers in private message.
