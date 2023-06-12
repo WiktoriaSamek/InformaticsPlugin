@@ -72,4 +72,4 @@ nr;X;Y;H
 ```
 The input file should be formatted similar to the example provided above, with the column names in the first row and the corresponding values in subsequent rows. The values in the columns should be floating-point numbers.
 
-For any technical issues or further information, please refer to the plugin documentation or contact the plugin developers.
+For any technical issues or further information, please refer to the plugin documentation or contact the plugin developers in private message.
