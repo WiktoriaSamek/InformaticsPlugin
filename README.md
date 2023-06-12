@@ -58,6 +58,9 @@ If the user selects too many points, they will see the following message:
 ```sh
 Too many points were selected
 ```
+If the user calculate the surface area firstly and then proceeds to generate coordinates of the selected points, no result will be display because  these operations refer to different layers.
+
+If the user wants to obtain the results of generating the coordinates of selected points, should first go to the appropriate layer, then select the points and induce the appropriate function.
 
 ## Technical Notes:
 -The "Clear All" option deletes all calculations and newly created temporary layers.
